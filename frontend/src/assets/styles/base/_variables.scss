@@ -1,0 +1,99 @@
+// ========== 颜色系统 ==========
+$color-primary: #2a6eff;
+$color-primary-dark: #1d5fe6;
+$color-primary-light: #e8f3ff;
+$color-accent: #ff6b35;
+$color-accent-light: #fff3e8;
+$color-success: #4caf50;
+$color-warning: #ff9800;
+$color-danger: #e74c3c;
+$color-purple: #9c27b0;
+$color-teal: #008888;
+$color-gray: #607d8b;
+
+// 文本色
+$color-text-primary: #2d3748;
+$color-text-secondary: #333;
+$color-text-tertiary: #555;
+$color-text-body: #666;
+$color-text-muted: #888;
+$color-text-light: #999;
+$color-text-placeholder: #bbb;
+$color-text-quaternary: #888;
+
+// 背景色
+$color-bg-page: #f5f7fa;
+$color-bg-card: #fff;
+$color-bg-input: #f9f9f9;
+$color-bg-divider: #f0f0f0;
+
+// ========== 字体 ==========
+$font-family-base: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-size-xs: 12px;
+$font-size-sm: 13px;
+$font-size-base: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 22px;
+$font-size-3xl: 24px;
+$font-size-4xl: 26px;
+$font-size-5xl: 28px;
+$font-size-6xl: 32px;
+$font-size-7xl: 36px;
+$font-size-8xl: 42px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// ========== 间距 ==========
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-2xl: 24px;
+$spacing-3xl: 30px;
+$spacing-4xl: 40px;
+$spacing-5xl: 50px;
+$spacing-6xl: 60px;
+
+// ========== 圆角 ==========
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-xl: 10px;
+$radius-2xl: 12px;
+$radius-3xl: 14px;
+$radius-4xl: 15px;
+$radius-5xl: 16px;
+$radius-6xl: 20px;
+$radius-round: 50%;
+$radius-full: 50px;
+
+// ========== 阴影 ==========
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 3px 15px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.08);
+$shadow-xl: 0 8px 25px rgba(0, 0, 0, 0.12);
+$shadow-2xl: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+// ========== 布局 ==========
+$max-width: 1200px;
+$header-height: 80px;
+$content-margin-top: 120px;
+$content-margin-bottom: 60px;
+
+// ========== 过渡 ==========
+$transition-fast: 0.2s;
+$transition-base: 0.3s;
+$transition-slow: 0.6s;
+
+// ========== 边框 ==========
+$border-color: #ddd;
+$border-color-light: #eee;
+
+// ========== 渐变色 ==========
+$color-gradient-primary: linear-gradient(135deg, #2a6eff 0%, #5b8cff 100%);
