@@ -1,0 +1,26 @@
+// ========== 桂升通—广西专升本资源整合与智慧服务平台 ==========
+// 全局样式入口文件
+
+// Base
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/reset';
+@import 'base/global';
+
+// Layout
+@import 'layout/header';
+@import 'layout/page';
+@import 'layout/responsive';
+
+// Components
+@import 'components/auth';
+@import 'components/dropdown';
+@import 'components/ai';
+
+// Pages
+@import 'pages/home';
+@import 'pages/courses';
+@import 'pages/quiz';
+@import 'pages/mentor';
+@import 'pages/about';
+@import 'pages/services';

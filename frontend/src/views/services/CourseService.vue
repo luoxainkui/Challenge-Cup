@@ -2,7 +2,7 @@
   <div class="page-container">
     <!-- 页面头部 -->
     <div class="service-hero">
-      <span class="service-hero-icon">&#128218;</span>
+      <span class="service-hero-icon">📚</span>
       <h1 class="service-hero-title">精讲课程</h1>
       <p class="service-hero-desc">覆盖公共课及专业课，由一线名师倾心打造，聚焦广西专升本考纲考点，系统梳理知识框架。</p>
     </div>
@@ -12,22 +12,28 @@
       <div class="filter-group">
         <span class="filter-label">类别：</span>
         <button
-          v-for="cat in categories"
+          v-for="cat in COURSE_CATEGORIES"
           :key="cat.value"
           :class="['filter-tag', { active: activeCategory === cat.value }]"
-          @click="activeCategory = cat.value"
+          @click="setCategory(cat.value)"
         >{{ cat.label }}</button>
       </div>
       <div class="search-box">
-        <input v-model="searchKeyword" type="text" class="search-input" placeholder="搜索课程..." />
-        <button class="search-btn">&#128269;</button>
+        <input
+          v-model="searchKeyword"
+          type="text"
+          class="search-input"
+          placeholder="搜索课程..."
+          @input="onSearchChange"
+        />
+        <button class="search-btn">🔍</button>
       </div>
     </div>
 
-    <!-- 课程列表 -->
+    <!-- 课程列表（每页4门） -->
     <div class="course-grid">
-      <div v-for="course in filteredCourses" :key="course.id" class="course-card">
-        <div class="course-card-img" :style="{ background: course.bgColor }">
+      <div v-for="course in pagedCourses" :key="course.id" class="course-card">
+        <div class="course-card-img" :style="{ background: course.color }">
           <span class="course-card-subject">{{ course.subject }}</span>
           <span class="course-card-badge" v-if="course.hot">热门</span>
         </div>
@@ -41,99 +47,184 @@
               <span>{{ course.teacher }}</span>
             </div>
             <div class="course-stats">
-              <span class="stat-item">&#128101; {{ course.students }}</span>
-              <span class="stat-item">&#11088; {{ course.rating }}</span>
+              <span class="stat-item">👥 {{ course.students }}</span>
+              <span class="stat-item">⭐ {{ course.rating }}</span>
             </div>
           </div>
           <div class="course-footer">
             <span class="course-price">¥{{ course.price }}</span>
-            <button class="course-btn">立即报名</button>
+            <button class="course-btn" @click="goToCourseDetail(course)">立即报名</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 分页 -->
-    <div class="pagination">
-      <button class="page-btn disabled">上一页</button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn">2</button>
-      <button class="page-btn">3</button>
-      <button class="page-btn">...</button>
-      <button class="page-btn">8</button>
-      <button class="page-btn">下一页</button>
-    </div>
+    <PaginationBar
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      @change="goToPage"
+    />
 
-    <!-- ========== AI 功能预留区 ========== -->
-    <!--
-      后续 AI 功能接入接口：
-      - 课程智能推荐：根据用户学习行为推荐适配课程
-      - 学习路径规划：AI 生成个性化课程学习计划
-      - 课程质量评分：基于学员反馈的智能评分系统
-      - 智能答疑：课程内容相关的 AI 问答助手
-      API 端点预留：
-        POST /api/ai/course/recommend
-        POST /api/ai/course/path-plan
-        GET  /api/ai/course/qa?courseId=xxx
-    -->
-    <div class="ai-placeholder">
-      <div class="ai-placeholder-header">
-        <span class="ai-icon">&#129302;</span>
-        <h3>AI 智能推荐</h3>
-        <span class="ai-badge">即将上线</span>
-      </div>
-      <p class="ai-placeholder-desc">基于您的学习进度与薄弱环节，AI 将为您智能推荐最适合的课程组合，实现个性化高效备考。</p>
-      <div class="ai-slot-row">
-        <div class="ai-slot-card" v-for="i in 3" :key="i">
-          <div class="ai-slot-thumb"></div>
-          <div class="ai-slot-line w-60"></div>
-          <div class="ai-slot-line w-40"></div>
-        </div>
-      </div>
-    </div>
+    <!-- AI 智能推荐 -->
+    <AiRecommend />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { COURSE_CATEGORIES } from '@/constants/courses'
+import { useCourseFilter } from '@/composables/useCourseFilter'
+import PaginationBar from '@/components/course/PaginationBar.vue'
+import AiRecommend from '@/components/course/AiRecommend.vue'
 
-const searchKeyword = ref('')
-const activeCategory = ref('all')
+const router = useRouter()
 
-const categories = [
-  { label: '全部', value: 'all' },
-  { label: '公共课', value: 'public' },
-  { label: '专业课', value: 'major' },
-]
+const {
+  searchKeyword,
+  activeCategory,
+  currentPage,
+  totalPages,
+  pagedCourses,
+  goToPage,
+  setCategory,
+  onSearchChange,
+} = useCourseFilter()
 
-const courses = ref([
-  { id: 1, subject: '大学英语', category: '公共课', name: '专升本大学英语精讲班', desc: '从词汇到写作，系统性提升英语综合能力，紧扣广西专升本英语考纲', teacher: '张雪峰教授', students: 3256, rating: 4.9, price: 299, hot: true, bgColor: 'linear-gradient(135deg, #e8f3ff, #d0e6ff)' },
-  { id: 2, subject: '高等数学', category: '公共课', name: '专升本高等数学强化班', desc: '聚焦必考知识点，精讲精练，帮助零基础学员快速突破数学难关', teacher: '李明博士', students: 2187, rating: 4.8, price: 359, hot: true, bgColor: 'linear-gradient(135deg, #fff3e8, #ffe6d0)' },
-  { id: 3, subject: '管理学', category: '专业课', name: '管理学原理精讲精练', desc: '结合广西专升本管理学考纲，深入浅出讲解管理理论与实践案例', teacher: '王红副教授', students: 1876, rating: 4.7, price: 259, hot: false, bgColor: 'linear-gradient(135deg, #f0ffe8, #d8ffc0)' },
-  { id: 4, subject: '大学语文', category: '公共课', name: '专升本大学语文基础班', desc: '从文言文到现代文阅读，全面提升语文素养与应试技巧', teacher: '刘芳教授', students: 1567, rating: 4.8, price: 199, hot: false, bgColor: 'linear-gradient(135deg, #f3e8ff, #e0d0ff)' },
-  { id: 5, subject: '会计学', category: '专业课', name: '会计学基础与实务', desc: '理论联系实际，掌握会计核心技能，轻松应对专业考试', teacher: '陈强讲师', students: 1342, rating: 4.6, price: 279, hot: false, bgColor: 'linear-gradient(135deg, #e8ffee, #c0ffd8)' },
-  { id: 6, subject: '计算机', category: '专业课', name: '计算机应用基础速成班', desc: '零基础入门，涵盖Office操作与计算机基础理论，快速提分', teacher: '赵敏博士', students: 2103, rating: 4.7, price: 239, hot: false, bgColor: 'linear-gradient(135deg, #fff0e8, #ffe0c8)' },
-  { id: 7, subject: '政治', category: '公共课', name: '专升本政治理论精讲班', desc: '紧扣时事热点，系统梳理政治理论考点，助力高分突破', teacher: '周华教授', students: 2890, rating: 4.9, price: 269, hot: true, bgColor: 'linear-gradient(135deg, #fff8e8, #ffeecc)' },
-  { id: 8, subject: '经济学', category: '专业课', name: '经济学原理与实务', desc: '宏观微观经济学核心知识详解，配合同步习题巩固提升', teacher: '吴芳博士', students: 987, rating: 4.5, price: 289, hot: false, bgColor: 'linear-gradient(135deg, #e8f5ff, #cce5ff)' },
-])
-
-const filteredCourses = computed(() => {
-  let result = courses.value
-  if (activeCategory.value !== 'all') {
-    result = result.filter(c => {
-      if (activeCategory.value === 'public') return c.category === '公共课'
-      if (activeCategory.value === 'major') return c.category === '专业课'
-      return true
-    })
-  }
-  if (searchKeyword.value.trim()) {
-    const kw = searchKeyword.value.trim().toLowerCase()
-    result = result.filter(c =>
-      c.name.toLowerCase().includes(kw) ||
-      c.subject.toLowerCase().includes(kw) ||
-      c.teacher.toLowerCase().includes(kw)
-    )
-  }
-  return result
-})
+const goToCourseDetail = (course) => {
+  router.push({ name: 'courses', query: { id: course.id } })
+}
 </script>
+
+<style lang="scss" scoped>
+.page-container {
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* Hero */
+.service-hero {
+  padding: 100px 0 32px;
+  text-align: center;
+  background: $color-gradient-primary;
+  color: #fff;
+
+  .service-hero-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+  .service-hero-title { font-size: $font-size-4xl; font-weight: $font-weight-bold; margin-bottom: 8px; }
+  .service-hero-desc { opacity: .85; font-size: $font-size-md; max-width: 640px; margin: 0 auto; }
+}
+
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 0;
+  background: #fff;
+  border-bottom: 1px solid #edf0f5;
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.filter-group { display: flex; align-items: center; gap: 8px; }
+.filter-label { font-size: $font-size-sm; color: $color-text-secondary; font-weight: $font-weight-medium; }
+
+.filter-tag {
+  padding: 6px 20px;
+  border: 1.5px solid #e0e4ea;
+  background: #fff;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover { border-color: $color-primary; color: $color-primary; }
+  &.active { background: $color-primary; color: #fff; border-color: $color-primary; }
+}
+
+.search-box {
+  display: flex; align-items: center;
+  border: 1.5px solid #e0e4ea;
+  border-radius: $radius-full;
+  overflow: hidden; background: #fff;
+  transition: border-color $transition-fast;
+  &:focus-within { border-color: $color-primary; }
+}
+.search-input {
+  border: none; outline: none;
+  padding: 8px 16px; font-size: $font-size-sm;
+  width: 200px; color: $color-text-primary;
+}
+.search-btn {
+  border: none; background: $color-primary; color: #fff;
+  padding: 8px 16px; cursor: pointer; font-size: $font-size-sm;
+}
+
+/* Course Grid */
+.course-grid {
+  max-width: $max-width; margin: 0 auto; padding: 32px 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.course-card {
+  background: #fff; border-radius: $radius-xl; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+  transition: all $transition-base;
+  &:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0, 0, 0, .1); }
+}
+.course-card-img {
+  height: 100px; display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 10px 16px; position: relative;
+}
+.course-card-subject {
+  color: rgba(255, 255, 255, .9); font-weight: $font-weight-semibold;
+  font-size: $font-size-sm; text-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+.course-card-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255, 59, 48, .9); color: #fff;
+  padding: 2px 10px; border-radius: $radius-full; font-size: 11px; font-weight: $font-weight-medium;
+}
+.course-card-body { padding: 16px; }
+.course-tag {
+  display: inline-block; padding: 2px 10px;
+  background: #f0f3ff; color: $color-primary;
+  border-radius: $radius-full; font-size: 11px; margin-bottom: 8px;
+}
+.course-name { font-size: $font-size-base; font-weight: $font-weight-bold; color: $color-text-primary; margin-bottom: 6px; line-height: 1.4; }
+.course-desc {
+  font-size: $font-size-xs; color: $color-text-quaternary; line-height: 1.5; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.course-meta { display: flex; justify-content: space-between; align-items: center; font-size: $font-size-xs; color: $color-text-tertiary; margin-bottom: 12px; }
+.course-teacher { display: flex; align-items: center; gap: 4px; }
+.teacher-dot { width: 6px; height: 6px; border-radius: 50%; background: $color-primary; }
+.course-stats { display: flex; gap: 10px; }
+.stat-item { color: $color-text-muted; }
+.course-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+.course-price { font-size: $font-size-md; font-weight: $font-weight-bold; color: $color-accent; }
+.course-btn {
+  padding: 6px 16px; background: $color-primary; color: #fff; border: none;
+  border-radius: $radius-md; font-size: $font-size-xs; font-weight: $font-weight-medium;
+  cursor: pointer; transition: all $transition-fast;
+  &:hover { background: $color-primary-dark; }
+}
+
+/* Responsive */
+@include respond-to('desktop') {
+  .course-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@include respond-to('tablet') {
+  .course-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@include respond-to('mobile') {
+  .course-grid { grid-template-columns: 1fr; }
+  .filter-bar { flex-direction: column; gap: 12px; }
+}
+</style>

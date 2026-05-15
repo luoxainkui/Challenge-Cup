@@ -1,0 +1,318 @@
+/* ========== 课程中心 ========== */
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.course-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    border-left: 4px solid #2a6eff;
+    padding-left: 15px;
+}
+.filter-bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.filter-select {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #666;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+.filter-select:hover {
+    border-color: #2a6eff;
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 0 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.search-input {
+    border: none;
+    outline: none;
+    padding: 8px 0;
+    font-size: 14px;
+    width: 200px;
+}
+.search-btn {
+    border: none;
+    background: none;
+    color: #2a6eff;
+    cursor: pointer;
+    font-size: 16px;
+}
+.course-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+.course-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+.course-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.course-info {
+    padding: 20px;
+}
+.course-category {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #e8f3ff;
+    color: #2a6eff;
+    font-size: 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.course-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+.course-teacher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+.teacher-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+.course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+.course-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ff6b35;
+}
+.course-enroll {
+    padding: 6px 18px;
+    background-color: #2a6eff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.course-enroll:hover {
+    background-color: #1d5fe6;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    gap: 10px;
+}
+.page-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.page-btn:hover, .page-btn.active {
+    border-color: #2a6eff;
+    color: #2a6eff;
+    background-color: #e8f3ff;
+}
+.page-btn.disabled {
+    cursor: not-allowed;
+    color: #ccc;
+    border-color: #eee;
+    background-color: #f9f9f9;
+}
+
+/* ========== 精讲课程：筛选栏 ========== */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filter-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+.filter-tag {
+  padding: 6px 16px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.filter-tag:hover, .filter-tag.active {
+  background: #2a6eff;
+  color: #fff;
+  border-color: #2a6eff;
+}
+
+/* ========== 精讲课程：课程网格 ========== */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.course-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.course-card-img {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.course-card-subject {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2d3748;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+}
+.course-card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 3px 10px;
+  background: #ff6b35;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.course-card-body {
+  padding: 18px;
+}
+.course-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e8f3ff;
+  color: #2a6eff;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.course-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.course-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.course-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.course-teacher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #666;
+}
+.teacher-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2a6eff;
+  display: inline-block;
+}
+.course-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #999;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.course-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+.course-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff6b35;
+}
+.course-btn {
+  padding: 6px 16px;
+  background: #2a6eff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.course-btn:hover {
+  background: #1d5fe6;
+}

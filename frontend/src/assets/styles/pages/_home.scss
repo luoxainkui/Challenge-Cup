@@ -1,0 +1,71 @@
+/* ========== 首页 ========== */
+.banner {
+    text-align: left;
+    margin-bottom: 60px;
+    padding: 40px;
+    background: linear-gradient(135deg, #e8f3ff 0%, #f0f7ff 100%);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+.banner h1 {
+    font-size: 42px;
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+.banner p {
+    font-size: 18px;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.services {
+    margin-bottom: 60px;
+}
+.services h2 {
+    font-size: 26px;
+    color: #2d3748;
+    margin-bottom: 30px;
+    padding-left: 10px;
+    border-left: 4px solid #2a6eff;
+}
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.card-icon {
+    font-size: 48px;
+    color: #2a6eff;
+    margin-bottom: 20px;
+}
+.card h3 {
+    font-size: 20px;
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+.card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+.footer {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 20px 0;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 40px;
+}

@@ -3,12 +3,13 @@
     <!-- 英雄区域 -->
     <section class="hero">
       <div class="hero-bg"></div>
+      <div class="hero-gradient-rect"></div>
       <div class="hero-content">
         <h1>广西专升本<br/>从这里开始</h1>
         <p>精讲课程 · 智能题库 · 伴学服务<br/>为广西学子量身打造的专升本一站式解决方案</p>
         <div class="hero-btns">
           <a href="/courses" class="btn-primary" @click.prevent="$router.push('/courses')">开始学习</a>
-          <a href="/about" class="btn-outline" @click.prevent="$router.push('/about')">了解更多</a>
+          <a href="#services" class="btn-outline" @click.prevent="scrollToSection('services')">了解更多</a>
         </div>
       </div>
       <div class="hero-stats">
@@ -19,22 +20,47 @@
       </div>
     </section>
 
-    <!-- 服务模块 -->
-    <section class="services">
+    <!-- 精选课程 -->
+    <section id="services" class="featured-courses">
       <h2 class="section-title">核心服务</h2>
-      <p class="section-subtitle">三大产品矩阵，覆盖专升本备考全流程</p>
-      <div class="service-cards">
-        <div class="service-card" v-for="svc in HOME_SERVICES" :key="svc.title" @click="$router.push(svc.link)">
-          <div class="service-icon" v-html="svc.icon"></div>
-          <h3>{{ svc.title }}</h3>
-          <p>{{ svc.desc }}</p>
-          <span class="service-link">了解详情 →</span>
+      <p class="section-subtitle">精选优质课程，覆盖公共课与专业课，助你高效备考</p>
+      <div class="course-grid">
+        <div
+          class="course-card"
+          v-for="c in FEATURED_COURSES"
+          :key="c.id"
+          @click="$router.push('/courses')"
+        >
+          <div class="card-cover" :style="{ background: c.color }">
+            <span class="card-hot" v-if="c.hot">🔥 热报</span>
+            <span class="card-category">{{ c.category }}</span>
+          </div>
+          <div class="card-body">
+            <h4 class="card-subject">{{ c.subject }}</h4>
+            <p class="card-name">{{ c.name }}</p>
+            <div class="card-meta">
+              <span>👨‍🏫 {{ c.teacher }}</span>
+              <span>⭐ {{ c.rating }}</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-lessons">{{ c.lessons }}课时 · {{ c.duration }}</span>
+              <span class="card-price" :class="{ free: c.price === 0 }">
+                {{ c.price === 0 ? '免费' : '¥' + c.price }}
+              </span>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="view-all">
+        <a href="/courses" class="view-all-link" @click.prevent="$router.push('/courses')">
+          查看全部课程 →
+        </a>
       </div>
     </section>
 
     <!-- 为什么选择我们 -->
     <section class="why-us">
+      <div class="why-us-bg-rect"></div>
       <h2 class="section-title">为什么选择桂升通</h2>
       <div class="advantage-list">
         <div class="advantage-item" v-for="adv in ADVANTAGES" :key="adv.title">
@@ -55,7 +81,18 @@
 </template>
 
 <script setup>
-import { HOME_STATS, HOME_SERVICES, ADVANTAGES } from '@/constants/home'
+import { HOME_STATS, ADVANTAGES } from '@/constants/home'
+import { COURSES } from '@/constants/courses'
+import { computed } from 'vue'
+
+const FEATURED_COURSES = computed(() => COURSES.slice(0, 6))
+
+function scrollToSection(id) {
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -101,6 +138,19 @@ import { HOME_STATS, HOME_SERVICES, ADVANTAGES } from '@/constants/home'
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="white" fill-opacity="0.08" d="M0,160L48,176C96,192,192,224,288,240C384,256,480,256,576,224C672,192,768,128,864,122.7C960,117,1056,171,1152,181.3C1248,192,1344,160,1392,144L1440,128V320H0Z"/></svg>') no-repeat bottom;
     background-size: cover;
   }
+}
+
+.hero-gradient-rect {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 360px;
+  border-radius: 40px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hero-content {
@@ -187,61 +237,153 @@ import { HOME_STATS, HOME_SERVICES, ADVANTAGES } from '@/constants/home'
   opacity: 0.8;
 }
 
-/* Services */
-.services {
+/* Featured Courses */
+.featured-courses {
   padding: 80px 0;
-  width: $max-width;
+  max-width: $max-width;
   margin: 0 auto;
 }
 
-.service-cards {
+.course-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  margin-bottom: 36px;
 }
 
-.service-card {
+.course-card {
   background: #fff;
   border-radius: $radius-xl;
-  padding: 40px 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  transition: all $transition-base;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  text-align: center;
+  transition: all $transition-base;
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+
+    .card-cover {
+      filter: brightness(1.05);
+    }
   }
 }
 
-.service-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
+.card-cover {
+  height: 120px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 16px;
 }
 
-.service-card h3 {
-  font-size: $font-size-xl;
+.card-hot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 59, 48, 0.9);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+}
+
+.card-category {
+  background: rgba(255, 255, 255, 0.85);
+  color: $color-text-secondary;
+  padding: 3px 12px;
+  border-radius: $radius-full;
+  font-size: 11px;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.card-subject {
+  font-size: $font-size-sm;
+  color: $color-primary;
   font-weight: $font-weight-semibold;
+  margin-bottom: 4px;
+}
+
+.card-name {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  display: flex;
+  gap: 16px;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
   margin-bottom: 12px;
 }
 
-.service-card p {
-  color: $color-text-quaternary;
-  font-size: $font-size-base;
-  line-height: 1.6;
-  margin-bottom: 16px;
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
 }
 
-.service-link {
+.card-lessons {
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}
+
+.card-price {
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  color: $color-accent;
+
+  &.free {
+    color: $color-success;
+  }
+}
+
+.view-all {
+  text-align: center;
+}
+
+.view-all-link {
   color: $color-primary;
   font-weight: $font-weight-medium;
+  font-size: $font-size-base;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 /* Why us */
 .why-us {
   padding: 80px 0;
   background: #f8f9fb;
+  position: relative;
+  overflow: hidden;
+}
+
+.why-us-bg-rect {
+  position: absolute;
+  bottom: 0;
+  left: -80px;
+  width: 500px;
+  height: 320px;
+  border-radius: 30px;
+  background: linear-gradient(200deg, rgba(42, 110, 255, 0.05) 0%, rgba(108, 92, 231, 0.03) 50%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .advantage-list {
@@ -250,6 +392,8 @@ import { HOME_STATS, HOME_SERVICES, ADVANTAGES } from '@/constants/home'
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .advantage-item {
@@ -307,16 +451,15 @@ import { HOME_STATS, HOME_SERVICES, ADVANTAGES } from '@/constants/home'
 }
 
 @include respond-to('desktop') {
-  .services,
+  .featured-courses,
   .advantage-list {
-    width: 100%;
     padding-left: 20px;
     padding-right: 20px;
   }
 }
 
 @include respond-to('tablet') {
-  .service-cards {
+  .course-grid {
     grid-template-columns: 1fr;
   }
   .advantage-list {

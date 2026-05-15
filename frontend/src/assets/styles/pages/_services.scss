@@ -1,0 +1,27 @@
+/* ========== 服务详情页通用 Hero ========== */
+.service-hero {
+  text-align: left;
+  margin-bottom: 50px;
+  padding: 50px 40px;
+  background: linear-gradient(135deg, #e8f3ff 0%, #f0f7ff 100%);
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+.service-hero-icon {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 15px;
+}
+.service-hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+.service-hero-desc {
+  font-size: 16px;
+  color: #666;
+  max-width: 700px;
+  margin: 0 0 0 0;
+  line-height: 1.7;
+}
