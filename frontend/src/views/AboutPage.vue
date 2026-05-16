@@ -127,7 +127,7 @@
             </div>
           </div>
         </div>
-        <button class="contact-btn">在线咨询</button>
+        <button class="contact-btn" @click="$router.push('/consultation')">在线咨询</button>
       </div>
     </section>
   </div>

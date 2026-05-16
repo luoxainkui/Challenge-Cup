@@ -12,6 +12,7 @@ import QuizMockPage from '../views/quiz/QuizMockPage.vue'
 import QuizRealPage from '../views/quiz/QuizRealPage.vue'
 import QuizMistakePage from '../views/quiz/QuizMistakePage.vue'
 import MentorService from '../views/services/MentorService.vue'
+import ConsultationPage from '../views/ConsultationPage.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
@@ -24,6 +25,7 @@ const routes = [
   { path: '/quiz/real', name: 'quiz-real', component: QuizRealPage },
   { path: '/quiz/mistake', name: 'quiz-mistake', component: QuizMistakePage },
   { path: '/services/mentor', name: 'service-mentor', component: MentorService },
+  { path: '/consultation', name: 'consultation', component: ConsultationPage },
   { path: '/about', name: 'about', component: AboutPage },
   { path: '/login', name: 'login', component: LoginPage },
   { path: '/register', name: 'register', component: RegisterPage },

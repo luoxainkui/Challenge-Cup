@@ -5,12 +5,14 @@ import { ALL_QUESTIONS, QUESTION_TYPES } from '@/constants/quiz'
  * 练题引擎
  * @param {'single'|'multi'|'truefalse'|'fill'} filterType - 按类型筛选，不传则全部
  * @param {number} pageSize - 每页题数
+ * @param {Array} [dataSource] - 可选的自定义数据源，不传则使用 ALL_QUESTIONS
  */
-export function useQuiz(filterType, pageSize = 5) {
-  // 按类型筛选
+export function useQuiz(filterType, pageSize = 5, dataSource = null) {
+  // 按类型筛选（支持自定义数据源注入）
+  const basePool = dataSource || ALL_QUESTIONS
   const pool = filterType
-    ? ALL_QUESTIONS.filter(q => q.type === filterType)
-    : ALL_QUESTIONS
+    ? basePool.filter(q => q.type === filterType)
+    : basePool
 
   const questions = ref([...pool]) // 可打乱
   const currentIndex = ref(0)

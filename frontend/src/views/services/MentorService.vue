@@ -95,7 +95,7 @@
               <span>好评率 {{ m.rate }}%</span>
             </div>
           </div>
-          <button class="mentor-btn">预约咨询</button>
+          <button class="mentor-btn" @click="$router.push('/consultation')">预约咨询</button>
         </div>
       </div>
     </section>

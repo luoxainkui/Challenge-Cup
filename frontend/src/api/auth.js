@@ -12,4 +12,10 @@ export const authApi = {
 
   /** 发送验证码 */
   sendCode: (phone) => http.post('/auth/send-code', { phone }),
+
+  /** 验证验证码 */
+  verifyCode: (phone, code) => http.post('/auth/verify-code', { phone, code }),
+
+  /** 重置密码 */
+  resetPassword: (phone, code, password) => http.post('/auth/reset-password', { phone, code, password }),
 }

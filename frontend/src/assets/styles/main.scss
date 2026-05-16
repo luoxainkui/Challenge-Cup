@@ -2,25 +2,25 @@
 // 全局样式入口文件
 
 // Base
-@import 'base/variables';
-@import 'base/mixins';
-@import 'base/reset';
-@import 'base/global';
+@use 'base/variables' as *;
+@use 'base/mixins' as *;
+@use 'base/reset' as *;
+@use 'base/global' as *;
 
 // Layout
-@import 'layout/header';
-@import 'layout/page';
-@import 'layout/responsive';
+@use 'layout/header' as *;
+@use 'layout/page' as *;
+@use 'layout/responsive' as *;
 
 // Components
-@import 'components/auth';
-@import 'components/dropdown';
-@import 'components/ai';
+@use 'components/auth' as *;
+@use 'components/dropdown' as *;
+@use 'components/ai' as *;
 
 // Pages
-@import 'pages/home';
-@import 'pages/courses';
-@import 'pages/quiz';
-@import 'pages/mentor';
-@import 'pages/about';
-@import 'pages/services';
+@use 'pages/home' as *;
+@use 'pages/courses' as *;
+@use 'pages/quiz' as *;
+@use 'pages/mentor' as *;
+@use 'pages/about' as *;
+@use 'pages/services' as *;
