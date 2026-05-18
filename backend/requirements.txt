@@ -1,0 +1,14 @@
+--index-url https://pypi.tuna.tsinghua.edu.cn/simple
+fastapi==0.135.3
+uvicorn[standard]==0.44.0
+pydantic==2.12.5
+pydantic-settings==2.13.1
+email-validator==2.3.0
+asyncpg==0.30.0
+SQLAlchemy[asyncio]==2.0.49
+passlib==1.7.4
+bcrypt==5.0.0
+python-dotenv==1.1.1
+python-jose[cryptography]==3.4.0
+alembic==1.15.2
+greenlet==3.2.4

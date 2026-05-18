@@ -1,0 +1,2 @@
+# 防止非 backend 目录的 .devcontainer 被提交
+/.devcontainer/

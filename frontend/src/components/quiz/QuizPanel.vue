@@ -81,6 +81,9 @@
       <div class="analysis-body">{{ currentQuestion.analysis }}</div>
     </div>
 
+    <!-- AI 解题解析模块（提交后显示） -->
+    <AiSolutionPanel v-if="submitted[currentIndex]" />
+
     <!-- 底部导航 -->
     <div class="quiz-nav">
       <button :disabled="isFirst" @click="$emit('prev')" class="nav-btn">← 上一题</button>
@@ -101,6 +104,7 @@
 <script setup>
 import { computed } from 'vue'
 import { QUESTION_TYPES } from '@/constants/quiz'
+import AiSolutionPanel from './AiSolutionPanel.vue'
 
 const props = defineProps({
   currentQuestion: { type: Object, required: true },
@@ -221,4 +225,5 @@ function renderLatex(text) {
   &:disabled { opacity: .4; cursor: not-allowed; }
   &.submit-btn { border-color: $color-primary; background: $color-primary; color: #fff; }
 }
+
 </style>

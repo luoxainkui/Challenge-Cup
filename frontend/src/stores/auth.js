@@ -6,12 +6,14 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
 
   const isLoggedIn = computed(() => !!token.value)
-  const userName = computed(() => user.value?.name || '')
+  const userName = computed(() => user.value?.username || user.value?.name || '')
 
   function setAuth(data) {
-    token.value = data.token
+    // 后端返回 access_token，统一存为 token
+    const accessToken = data.access_token || data.token
+    token.value = accessToken
     user.value = data.user
-    localStorage.setItem('token', data.token)
+    localStorage.setItem('token', accessToken)
     localStorage.setItem('user', JSON.stringify(data.user))
   }
 

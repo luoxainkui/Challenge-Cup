@@ -4,6 +4,51 @@ export const COURSE_CATEGORIES = [
   { label: '专业课', value: 'major' },
 ]
 
+// ========== 一级学科大类（首屏卡片） ==========
+export const SUBJECT_CATEGORIES = [
+  {
+    key: 'yuwen',
+    name: '语文',
+    icon: '📖',
+    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    desc: '文言文 · 现代文阅读 · 写作',
+    subjects: ['大学语文'],
+  },
+  {
+    key: 'shuxue',
+    name: '数学',
+    icon: '📐',
+    color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    desc: '函数 · 微积分 · 线性代数',
+    subjects: ['高等数学'],
+  },
+  {
+    key: 'yingyu',
+    name: '英语',
+    icon: '🌍',
+    color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    desc: '词汇 · 语法 · 阅读 · 写作',
+    subjects: ['大学英语'],
+  },
+  {
+    key: 'zhuanyeke',
+    name: '专业课',
+    icon: '📚',
+    color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    desc: '管理 · 会计 · 计算机 · 经济',
+    subjects: ['管理学', '会计学', '计算机', '经济学', '政治'],
+  },
+]
+
+// ========== 专业课教材配图（书本实拍 / 封面图） ==========
+export const PROFESSIONAL_BOOKS = {
+  '管理学': { cover: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260"><rect fill="#2c3e50" width="200" height="260" rx="8"/><rect fill="#34495e" x="12" y="12" width="176" height="236" rx="4"/><text x="100" y="100" text-anchor="middle" fill="#ecf0f1" font-size="20" font-weight="bold">管理学</text><text x="100" y="130" text-anchor="middle" fill="#bdc3c7" font-size="14">原理与实务</text><rect fill="#e74c3c" x="60" y="160" width="80" height="4" rx="2"/><text x="100" y="200" text-anchor="middle" fill="#95a5a6" font-size="11">专升本指定教材</text></svg>'), price: '¥45.00' },
+  '会计学': { cover: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260"><rect fill="#1a5276" width="200" height="260" rx="8"/><rect fill="#2471a3" x="12" y="12" width="176" height="236" rx="4"/><text x="100" y="100" text-anchor="middle" fill="#ebf5fb" font-size="20" font-weight="bold">会计学</text><text x="100" y="130" text-anchor="middle" fill="#aed6f1" font-size="14">基础与实务</text><rect fill="#f39c12" x="60" y="160" width="80" height="4" rx="2"/><text x="100" y="200" text-anchor="middle" fill="#85c1e9" font-size="11">专升本指定教材</text></svg>'), price: '¥42.00' },
+  '计算机': { cover: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260"><rect fill="#1b4f72" width="200" height="260" rx="8"/><rect fill="#2e86c1" x="12" y="12" width="176" height="236" rx="4"/><text x="100" y="100" text-anchor="middle" fill="#d6eaf8" font-size="20" font-weight="bold">计算机</text><text x="100" y="130" text-anchor="middle" fill="#aed6f1" font-size="14">应用基础</text><rect fill="#27ae60" x="60" y="160" width="80" height="4" rx="2"/><text x="100" y="200" text-anchor="middle" fill="#85c1e9" font-size="11">专升本指定教材</text></svg>'), price: '¥39.00' },
+  '经济学': { cover: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260"><rect fill="#7d3c98" width="200" height="260" rx="8"/><rect fill="#9b59b6" x="12" y="12" width="176" height="236" rx="4"/><text x="100" y="100" text-anchor="middle" fill="#f5eef8" font-size="20" font-weight="bold">经济学</text><text x="100" y="130" text-anchor="middle" fill="#d2b4de" font-size="14">原理与实务</text><rect fill="#e67e22" x="60" y="160" width="80" height="4" rx="2"/><text x="100" y="200" text-anchor="middle" fill="#d2b4de" font-size="11">专升本指定教材</text></svg>'), price: '¥46.00' },
+  '政治': { cover: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="260"><rect fill="#922b21" width="200" height="260" rx="8"/><rect fill="#c0392b" x="12" y="12" width="176" height="236" rx="4"/><text x="100" y="100" text-anchor="middle" fill="#fadbd8" font-size="20" font-weight="bold">政治</text><text x="100" y="130" text-anchor="middle" fill="#f1948a" font-size="14">理论精讲</text><rect fill="#f1c40f" x="60" y="160" width="80" height="4" rx="2"/><text x="100" y="200" text-anchor="middle" fill="#f1948a" font-size="11">专升本指定教材</text></svg>'), price: '¥38.00' },
+}
+
 export const COURSES = [
   {
     id: 1,

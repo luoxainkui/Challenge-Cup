@@ -17,9 +17,23 @@
             </div>
           </transition>
         </div>
+        <div class="nav-dropdown" @mouseenter="showCommunity = true" @mouseleave="showCommunity = false">
+          <span class="nav-link" :class="{ active: isCommunityActive }">学习社区</span>
+          <transition name="dropdown-fade">
+            <div v-show="showCommunity" class="dropdown-menu">
+              <router-link to="/discussion">刷题讨论</router-link>
+              <router-link to="/resources">备考资料</router-link>
+              <router-link to="/admission">志愿填报</router-link>
+            </div>
+          </transition>
+        </div>
         <router-link to="/courses" class="nav-link" active-class="active">课程中心</router-link>
         <router-link to="/about" class="nav-link" active-class="active">关于我们</router-link>
-        <router-link to="/login" class="nav-link nav-auth" active-class="active">登录</router-link>
+        <template v-if="authStore.isLoggedIn">
+          <span class="nav-link nav-user">{{ authStore.userName }}</span>
+          <a class="nav-link nav-auth" @click.prevent="authStore.logout(); $router.push('/')">退出</a>
+        </template>
+        <router-link v-else to="/login" class="nav-link nav-auth" active-class="active">登录</router-link>
       </nav>
     </div>
   </header>
@@ -28,11 +42,15 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
+const authStore = useAuthStore()
 const showMenu = ref(false)
+const showCommunity = ref(false)
 
 const isServiceActive = computed(() => route.path.startsWith('/services'))
+const isCommunityActive = computed(() => ['/discussion', '/resources', '/admission'].includes(route.path))
 </script>
 
 <style lang="scss" scoped>

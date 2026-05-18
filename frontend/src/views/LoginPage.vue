@@ -7,7 +7,7 @@
           <h2 class="form-title">登录桂升通</h2>
         </div>
         <div class="input-group">
-          <input v-model="loginForm.phone" type="text" placeholder="手机号" />
+          <input v-model="loginForm.username" type="text" placeholder="用户名" />
         </div>
         <div class="input-group">
           <input v-model="loginForm.password" type="password" placeholder="密码" />
@@ -47,14 +47,14 @@ const loginError = ref('')
 const loginLoading = ref(false)
 
 const loginForm = reactive({
-  phone: '',
+  username: '',
   password: '',
 })
 
 async function handleLogin() {
   loginError.value = ''
-  if (!loginForm.phone.trim()) {
-    loginError.value = '请输入手机号'
+  if (!loginForm.username.trim()) {
+    loginError.value = '请输入用户名'
     return
   }
   if (!loginForm.password.trim()) {
@@ -63,8 +63,8 @@ async function handleLogin() {
   }
   loginLoading.value = true
   try {
-    const res = await authApi.login({ phone: loginForm.phone, password: loginForm.password })
-    authStore.setAuth({ token: res.token, user: res.user })
+    const res = await authApi.login({ username: loginForm.username, password: loginForm.password })
+    authStore.setAuth({ access_token: res.data.access_token, user: res.data.user })
     router.push('/')
   } catch (e) {
     loginError.value = e.message || '登录失败，请重试'

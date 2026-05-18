@@ -4,8 +4,11 @@ import { http } from './base'
  * 课程相关 API
  */
 export const courseApi = {
+  /** 获取学科大类 */
+  getSubjects: () => http.get('/courses/subjects'),
+
   /** 获取课程列表 */
-  getList: (params) => http.get('/courses', params),
+  getList: (params) => http.get('/courses', { params }),
 
   /** 获取课程详情 */
   getDetail: (id) => http.get(`/courses/${id}`),

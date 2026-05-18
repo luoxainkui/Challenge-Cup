@@ -53,28 +53,42 @@
       </div>
     </section>
 
-    <!-- AI 预留区 -->
-    <div class="ai-placeholder">
-      <div class="ai-placeholder-header">
-        <span class="ai-icon">&#129302;</span>
-        <h3>AI 智能组卷</h3>
-        <span class="ai-badge">即将上线</span>
+    <!-- AI 智能组卷 CTA -->
+    <section class="quiz-section ai-cta-section">
+      <div class="ai-cta-card">
+        <div class="ai-cta-glow"></div>
+        <div class="ai-cta-content">
+          <div class="ai-cta-left">
+            <span class="ai-cta-icon">🤖</span>
+            <div class="ai-cta-text">
+              <h2 class="ai-cta-title">AI 智能组卷</h2>
+              <p class="ai-cta-desc">根据你的学习数据，智能生成个性化专属试卷，精准攻克薄弱环节</p>
+            </div>
+          </div>
+          <button class="ai-cta-btn" @click="showAiModal = true">
+            <span class="ai-cta-btn-icon">✨</span>
+            开始智能组卷
+          </button>
+        </div>
       </div>
-      <p class="ai-placeholder-desc">AI 将根据您的历史答题数据，智能分析薄弱知识点，自动生成个性化定制试卷。</p>
-      <div class="ai-feature-row">
-        <div class="ai-feature-item"><span class="ai-feature-icon">&#127919;</span><span>精准定位薄弱点</span></div>
-        <div class="ai-feature-item"><span class="ai-feature-icon">&#128260;</span><span>智能难度匹配</span></div>
-        <div class="ai-feature-item"><span class="ai-feature-icon">&#128200;</span><span>学习趋势分析</span></div>
-      </div>
-    </div>
+    </section>
+
+    <!-- AI 智能组卷弹窗 -->
+    <AiGenModal :visible="showAiModal" :subjects="allSubjects" @close="showAiModal = false" />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { QUIZ_STATISTICS, QUIZ_MODES, QUIZ_SUBJECTS } from '@/constants/quiz'
+import AiGenModal from '@/components/quiz/AiGenModal.vue'
 
 const router = useRouter()
+
+// ---- AI 智能组卷弹窗 ----
+const showAiModal = ref(false)
+const allSubjects = QUIZ_SUBJECTS.map(s => s.name)
 
 // ---- 模式路由映射 ----
 const modeRoutes = {
@@ -237,35 +251,91 @@ function startSubject(s) {
   &:hover { background: $color-primary; color: #fff; }
 }
 
-/* ---- AI Placeholder ---- */
-.ai-placeholder {
-  max-width: $max-width;
-  margin: 0 auto;
-  padding: 32px 24px;
-  text-align: center;
-  background: linear-gradient(135deg, #f8f4ff 0%, #eef0ff 100%);
+/* ---- AI 智能组卷 CTA ---- */
+.ai-cta-section {
+  position: relative;
+}
+
+.ai-cta-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: $radius-xl;
-  border: 1px dashed #c4b5fd;
+  padding: 32px 36px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, .25);
 }
-.ai-placeholder-header {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  margin-bottom: 10px;
+
+.ai-cta-glow {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,.15) 0%, transparent 70%);
+  pointer-events: none;
 }
-.ai-icon { font-size: 30px; }
-.ai-placeholder-header h3 { font-size: $font-size-base; font-weight: $font-weight-semibold; color: $color-text-primary; }
-.ai-badge {
-  font-size: 10px;
-  padding: 2px 8px;
-  background: #ede9fe; color: #7c3aed;
-  border-radius: 50px;
+
+.ai-cta-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
 }
-.ai-placeholder-desc { font-size: $font-size-xs; color: $color-text-secondary; max-width: 480px; margin: 0 auto 16px; line-height: 1.6; }
-.ai-feature-row { display: flex; justify-content: center; gap: 28px; }
-.ai-feature-item {
-  display: flex; align-items: center; gap: 6px;
-  font-size: $font-size-xs; color: $color-text-tertiary;
+
+.ai-cta-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 260px;
 }
-.ai-feature-icon { font-size: 16px; }
+
+.ai-cta-icon {
+  font-size: 44px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.15));
+}
+
+.ai-cta-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.ai-cta-desc {
+  font-size: $font-size-xs;
+  color: rgba(255,255,255,.82);
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.ai-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: #5a4fcf;
+  background: #fff;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  transition: all .2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  }
+  &:active { transform: translateY(0); }
+}
+
+.ai-cta-btn-icon { font-size: 18px; }
 
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
@@ -275,5 +345,13 @@ function startSubject(s) {
 @media (max-width: 520px) {
   .mode-cards, .subject-grid { grid-template-columns: 1fr; }
   .quiz-stats { grid-template-columns: 1fr 1fr; }
+
+  .ai-cta-card { padding: 24px 20px; }
+  .ai-cta-content { flex-direction: column; text-align: center; }
+  .ai-cta-left { flex-direction: column; text-align: center; min-width: unset; }
+  .ai-cta-title { font-size: $font-size-base; }
+  .ai-cta-desc { max-width: 100%; }
+  .ai-cta-btn { width: 100%; justify-content: center; padding: 12px 24px; }
+
 }
 </style>

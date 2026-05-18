@@ -1,7 +1,17 @@
-/** 课程分类 */
+/** 课程分类（旧版） */
 export interface CourseCategory {
   label: string
   value: string
+}
+
+/** 一级学科大类 */
+export interface SubjectCategory {
+  key: string
+  name: string
+  icon: string
+  color: string
+  desc: string
+  subjects: string[]
 }
 
 /** 课程卡片数据 */
