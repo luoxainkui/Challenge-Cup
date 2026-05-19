@@ -7,7 +7,7 @@
           <h2 class="form-title">登录桂升通</h2>
         </div>
         <div class="input-group">
-          <input v-model="loginForm.username" type="text" placeholder="用户名" />
+          <input v-model="loginForm.email" type="email" placeholder="邮箱" />
         </div>
         <div class="input-group">
           <input v-model="loginForm.password" type="password" placeholder="密码" />
@@ -47,14 +47,18 @@ const loginError = ref('')
 const loginLoading = ref(false)
 
 const loginForm = reactive({
-  username: '',
+  email: '',
   password: '',
 })
 
 async function handleLogin() {
   loginError.value = ''
-  if (!loginForm.username.trim()) {
-    loginError.value = '请输入用户名'
+  if (!loginForm.email.trim()) {
+    loginError.value = '请输入邮箱'
+    return
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginForm.email.trim())) {
+    loginError.value = '请输入正确的邮箱格式'
     return
   }
   if (!loginForm.password.trim()) {
@@ -63,7 +67,7 @@ async function handleLogin() {
   }
   loginLoading.value = true
   try {
-    const res = await authApi.login({ username: loginForm.username, password: loginForm.password })
+    const res = await authApi.login({ email: loginForm.email.trim(), password: loginForm.password })
     authStore.setAuth({ access_token: res.data.access_token, user: res.data.user })
     router.push('/')
   } catch (e) {

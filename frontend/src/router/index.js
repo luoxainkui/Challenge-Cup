@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import HomePage from '../views/HomePage.vue'
 import CoursesPage from '../views/CoursesPage.vue'
 import AboutPage from '../views/AboutPage.vue'
@@ -45,13 +46,17 @@ const router = createRouter({
   },
 })
 
-// 路由守卫：需要登录的页面（后续按需扩展）
-const authRequiredPaths = []
+// 路由守卫：所有功能页面需要登录后才能访问
+// 仅首页、关于、登录、注册页面无需登录
+const publicPaths = ['/', '/about', '/login', '/register']
 
 router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem('token')
-  if (authRequiredPaths.includes(to.path) && !token) {
-    next({ path: '/login', query: { redirect: to.fullPath } })
+  if (!publicPaths.includes(to.path) && !token) {
+    // 弹出登录浮层，不跳转页面
+    const authStore = useAuthStore()
+    authStore.setLoginRequired(to.fullPath)
+    next(false)
   } else {
     next()
   }

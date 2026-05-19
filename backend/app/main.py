@@ -6,12 +6,14 @@ from core.database import engine, Base, SessionLocal
 from api.common_api import router as common_router
 from api.auth_api import router as auth_router
 from api.course_api import router as course_router
+from api.quiz_api import router as quiz_router
 from utils.logging import RequestLoggingMiddleware
 from utils.exceptions import register_exception_handlers
 
 # 注册所有模型，确保 create_all 能发现
 import model.user_model  # noqa: F401
 import model.course_model  # noqa: F401
+import model.quiz_model  # noqa: F401
 
 
 @asynccontextmanager
@@ -23,8 +25,11 @@ async def lifespan(app: FastAPI):
     db = SessionLocal()
     try:
         import crud.course_crud as course_crud
+        import crud.quiz_crud as quiz_crud
         course_crud.seed_subjects(db)
         course_crud.seed_courses(db)
+        quiz_crud.seed_questions(db)
+        quiz_crud.seed_papers(db)
     finally:
         db.close()
 
@@ -60,6 +65,7 @@ register_exception_handlers(app)
 app.include_router(common_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
 app.include_router(course_router, prefix="/api")
+app.include_router(quiz_router, prefix="/api")
 
 
 @app.get("/")

@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta, timezone
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt
 from passlib.context import CryptContext
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
+
 from core.config import settings
 from core.database import get_db
 
@@ -48,23 +50,33 @@ def decode_access_token(token: str) -> dict | None:
         return None
 
 
-async def get_current_user(
+def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security_scheme),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
-    """从 Bearer Token 异步解析当前登录用户"""
+    """从 Bearer Token 同步解析当前登录用户"""
     from model.user_model import User
 
     token = credentials.credentials
     payload = decode_access_token(token)
     if payload is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token 无效或已过期")
+
     user_id = payload.get("sub")
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token 无效")
 
-    result = await db.execute(select(User).where(User.id == int(user_id)))
-    user = result.scalar_one_or_none()
+    try:
+        uid = int(user_id)
+    except (TypeError, ValueError):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户 ID 格式非法")
+
+    from utils.snowflake import parse_snowflake
+
+    if not parse_snowflake(uid):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户 ID 校验失败（非 Snowflake）")
+
+    user = db.scalar(select(User).where(User.id == uid))
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户不存在")
     return user

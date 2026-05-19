@@ -3,15 +3,16 @@
     <div class="form-header">
       <div class="form-logo">桂</div>
       <h2 class="form-title">重置密码</h2>
-      <p class="form-subtitle">通过手机号验证重置您的密码</p>
+      <p class="form-subtitle">通过邮箱验证重置您的密码</p>
     </div>
 
-    <!-- 步骤 1：输入手机号 -->
+    <!-- 步骤 1：输入邮箱 -->
     <div v-if="step === 1">
       <div class="input-group">
-        <input v-model="form.phone" type="text" placeholder="请输入注册手机号" />
+        <input v-model="form.email" type="email" placeholder="请输入注册邮箱" />
       </div>
       <p class="form-error" v-if="error">{{ error }}</p>
+      <p class="form-hint">💡 验证码将发送到您的注册邮箱，请注意查收（如未收到请检查垃圾箱）</p>
       <button class="form-btn" @click="handleSendCode" :disabled="sending">
         {{ sending ? '发送中...' : '获取验证码' }}
       </button>
@@ -23,7 +24,7 @@
     <!-- 步骤 2：验证码 + 新密码 -->
     <div v-else>
       <div class="input-group">
-        <input v-model="form.phone" type="text" disabled class="input-disabled" />
+        <input v-model="form.email" type="email" disabled class="input-disabled" />
       </div>
       <div class="code-input">
         <input v-model="form.code" type="text" placeholder="输入验证码" />
@@ -64,7 +65,7 @@ const resetting = ref(false)
 const { countdown, start: startCountdown, stop: stopCountdown } = useCountdown()
 
 const form = reactive({
-  phone: '',
+  email: '',
   code: '',
   password: '',
   confirmPassword: '',
@@ -75,7 +76,7 @@ function resetState() {
   error.value = ''
   success.value = ''
   stopCountdown()
-  form.phone = ''
+  form.email = ''
   form.code = ''
   form.password = ''
   form.confirmPassword = ''
@@ -83,20 +84,20 @@ function resetState() {
 
 async function handleSendCode() {
   error.value = ''
-  if (!form.phone.trim()) {
-    error.value = '请输入手机号'
+  if (!form.email.trim()) {
+    error.value = '请输入邮箱'
     return
   }
-  if (!/^1\d{10}$/.test(form.phone.trim())) {
-    error.value = '请输入正确的手机号'
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+    error.value = '请输入正确的邮箱格式'
     return
   }
   sending.value = true
   try {
-    await authApi.sendCode(form.phone.trim())
+    await authApi.sendCode(form.email.trim())
     if (step.value === 1) step.value = 2
     startCountdown()
-    success.value = '验证码已发送，请查收短信'
+    success.value = '验证码已发送，请查看终端控制台'
   } catch (e) {
     error.value = e.message || '验证码发送失败，请重试'
   } finally {
@@ -121,7 +122,7 @@ async function handleReset() {
   }
   resetting.value = true
   try {
-    await authApi.resetPassword(form.phone.trim(), form.code.trim(), form.password)
+    await authApi.resetPassword(form.email.trim(), form.code.trim(), form.password)
     success.value = '密码重置成功！即将跳转到登录页...'
     setTimeout(() => {
       emit('done')

@@ -8,11 +8,21 @@
     </router-view>
   </div>
   <SiteFooter />
+
+  <LoginModal
+    :visible="authStore.loginRequired"
+    @close="authStore.clearLoginRequired()"
+    @logged-in="authStore.clearLoginRequired()"
+  />
 </template>
 
 <script setup>
 import NavHeader from '@/components/NavHeader.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import LoginModal from '@/components/auth/LoginModal.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 </script>
 
 <style lang="scss" scoped>

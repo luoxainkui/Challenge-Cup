@@ -4,6 +4,8 @@ import { ref, computed } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || '')
   const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
+  const loginRequired = ref(false)
+  const redirectPath = ref('')
 
   const isLoggedIn = computed(() => !!token.value)
   const userName = computed(() => user.value?.username || user.value?.name || '')
@@ -24,5 +26,22 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('user')
   }
 
-  return { token, user, isLoggedIn, userName, setAuth, logout }
+  function setLoginRequired(path = '') {
+    loginRequired.value = true
+    redirectPath.value = path || redirectPath.value
+  }
+
+  function clearLoginRequired() {
+    loginRequired.value = false
+    redirectPath.value = ''
+  }
+
+  function popRedirectPath() {
+    const p = redirectPath.value
+    redirectPath.value = ''
+    clearLoginRequired()
+    return p
+  }
+
+  return { token, user, isLoggedIn, userName, loginRequired, redirectPath, setAuth, logout, setLoginRequired, clearLoginRequired, popRedirectPath }
 })

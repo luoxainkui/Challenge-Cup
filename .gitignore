@@ -1,2 +1,13 @@
 # 防止非 backend 目录的 .devcontainer 被提交
 /.devcontainer/
+
+# 一次性部署/调试脚本
+deploy_cn_mirrors.py
+deploy_final.py
+fix_docker_deploy.py
+fix_mirror_deploy.py
+deploy_setup.exp
+
+# 本地开发辅助脚本
+start_backend.sh
+start_frontend.sh

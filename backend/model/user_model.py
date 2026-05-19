@@ -1,25 +1,19 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
-from core.database import Base
+from model import TimestampMixin, Base
 
 
-class User(Base):
-    """
-    用户表 - 商业架构核心
-    包含：唯一用户名、邮箱、手机号、哈希密码、是否激活、创建/更新时间
-    """
+class User(TimestampMixin, Base):
+    """用户表"""
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    username = Column(String(50), unique=True, nullable=False, index=True)
-    email = Column(String(100), unique=True, nullable=False, index=True)
-    phone = Column(String(20), unique=True, nullable=True, index=True)
-    hashed_password = Column(String(255), nullable=False)
-    is_active = Column(Boolean, default=True, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
-        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
-    )
+    id              = Column(Integer, primary_key=True, autoincrement=True, comment="主键ID")
+    username        = Column(String(50), unique=True, nullable=False, comment="用户名")
+    email           = Column(String(100), unique=True, nullable=False, comment="邮箱")
+    phone           = Column(String(20), unique=True, nullable=True, comment="手机号")
+    hashed_password = Column(String(255), nullable=False, comment="哈希密码")
+    is_active       = Column(Boolean, default=True, server_default="1", nullable=False, comment="是否激活")
 
-    enrollments = relationship("Enrollment", back_populates="user")
+    enrollments   = relationship("Enrollment", back_populates="user")
+    quiz_records  = relationship("QuizRecord", back_populates="user")
+    mistake_books = relationship("MistakeBook", back_populates="user")

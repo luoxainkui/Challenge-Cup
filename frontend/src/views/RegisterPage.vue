@@ -24,14 +24,6 @@
       </div>
       <div class="input-group">
         <input
-          v-model="form.phone"
-          type="text"
-          placeholder="手机号（选填）"
-          autocomplete="tel"
-        />
-      </div>
-      <div class="input-group">
-        <input
           v-model="form.password"
           type="password"
           placeholder="设置密码（不少于6位）"
@@ -75,17 +67,16 @@ const loading = ref(false)
 const form = reactive({
   username: '',
   email: '',
-  phone: '',
   password: '',
   confirmPassword: '',
 })
 
 function validate() {
   if (!form.username.trim()) return '请输入用户名'
-  if (form.username.trim().length < 2) return '用户名至少2个字符'
+  if (form.username.trim().length > 10) return '用户名不能超过10个字符'
+  if (/^\d+$/.test(form.username.trim())) return '用户名不能为纯数字'
   if (!form.email.trim()) return '请输入邮箱'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) return '请输入正确的邮箱格式'
-  if (form.phone.trim() && !/^1\d{10}$/.test(form.phone.trim())) return '请输入正确的手机号'
   if (!form.password || form.password.length < 6) return '密码不能少于6位'
   if (form.password !== form.confirmPassword) return '两次输入的密码不一致'
   return null
@@ -105,9 +96,6 @@ async function handleRegister() {
       username: form.username.trim(),
       email: form.email.trim(),
       password: form.password,
-    }
-    if (form.phone.trim()) {
-      payload.phone = form.phone.trim()
     }
 
     const res = await authApi.register(payload)

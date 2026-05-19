@@ -7,7 +7,9 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # 安装系统依赖（psycopg2 编译需要 libpq-dev，生产用 gcc 编译后清理）
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 使用阿里云 Debian 镜像加速
+RUN sed -i 's|deb.debian.org|mirrors.aliyun.com|g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     gcc \
     && rm -rf /var/lib/apt/lists/*

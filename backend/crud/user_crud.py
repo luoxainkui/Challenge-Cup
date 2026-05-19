@@ -15,11 +15,7 @@ def get_user_by_email(db: Session, email: str) -> User | None:
     return db.query(User).filter(User.email == email).first()
 
 
-def get_user_by_phone(db: Session, phone: str) -> User | None:
-    return db.query(User).filter(User.phone == phone).first()
-
-
-def create_user(db: Session, username: str, email: str, password: str, phone: str | None = None) -> User:
+def create_user(db: Session, username: str, email: str, password: str) -> User:
     """
     创建用户：密码 bcrypt 哈希后入库。
     唯一性检查由 API 层在调用前完成。
@@ -27,7 +23,6 @@ def create_user(db: Session, username: str, email: str, password: str, phone: st
     user = User(
         username=username,
         email=email,
-        phone=phone,
         hashed_password=hash_password(password),
     )
     db.add(user)
@@ -46,3 +41,27 @@ def authenticate_user(db: Session, username: str, password: str) -> User | None:
     if not verify_password(password, user.hashed_password):
         return None
     return user
+
+
+def authenticate_user_by_email(db: Session, email: str, password: str) -> User | None:
+    """
+    认证用户（邮箱）：查找邮箱 -> 验证密码 -> 返回用户或 None
+    """
+    user = get_user_by_email(db, email)
+    if not user:
+        return None
+    if not verify_password(password, user.hashed_password):
+        return None
+    return user
+
+
+def update_password_by_email(db: Session, email: str, new_password: str) -> bool:
+    """
+    通过邮箱重置密码
+    """
+    user = get_user_by_email(db, email)
+    if not user:
+        return False
+    user.hashed_password = hash_password(new_password)
+    db.commit()
+    return True
