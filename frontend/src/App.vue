@@ -10,9 +10,9 @@
   <SiteFooter />
 
   <LoginModal
-    :visible="authStore.loginRequired"
-    @close="authStore.clearLoginRequired()"
-    @logged-in="authStore.clearLoginRequired()"
+    :visible="authStore.isModalVisible"
+    @close="authStore.closeLoginModal()"
+    @logged-in="authStore.closeLoginModal()"
   />
 </template>
 

@@ -33,7 +33,7 @@
           <span class="nav-link nav-user">{{ authStore.userName }}</span>
           <a class="nav-link nav-auth" @click.prevent="authStore.logout(); $router.push('/')">退出</a>
         </template>
-        <router-link v-else to="/login" class="nav-link nav-auth" active-class="active">登录</router-link>
+        <a v-else class="nav-link nav-auth" @click.prevent="authStore.openLoginModal()" href="#">登录</a>
       </nav>
     </div>
   </header>
