@@ -21,6 +21,8 @@
             {{ loginLoading ? '登录中...' : '登 录' }}
           </button>
           <div class="form-links">
+            <router-link to="/register" @click="handleClose">立即注册</router-link>
+            <span>|</span>
             <a href="#" @click.prevent="mode = 'forgot'">忘记密码</a>
           </div>
         </template>

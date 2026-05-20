@@ -35,6 +35,10 @@ class ResetPasswordRequest(BaseModel):
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(data: UserRegister, db: Session = Depends(get_db)):
     """注册 → 返回 { code, message, data: { access_token, user } }"""
+    # 校验邮箱验证码
+    if not verify_code(data.email, data.code):
+        return ApiResponse.fail(code=ERR_BAD_REQUEST, message="验证码错误或已过期")
+
     result = AuthService.register(
         db,
         username=data.username,

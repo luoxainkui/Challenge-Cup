@@ -136,6 +136,24 @@ def main():
 
     # ── Step 5: 创建 .env 文件（敏感配置仅存服务器） ──
     print("\n[5/6] 配置后端 .env...")
+
+    # 从本地 .env 读取 SMTP 密码（优先使用本地已配置的密码）
+    local_env_path = os.path.join(LOCAL_PROJECT, "backend", ".env")
+    smtp_user = ""
+    smtp_password = ""
+    if os.path.exists(local_env_path):
+        with open(local_env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("SMTP_USER="):
+                    smtp_user = line.split("=", 1)[1].strip().strip('"')
+                elif line.startswith("SMTP_PASSWORD="):
+                    smtp_password = line.split("=", 1)[1].strip().strip('"')
+    if not smtp_user:
+        smtp_user = "2583846465@qq.com"
+    print(f"  检测到本地 SMTP_USER: {smtp_user}")
+    print(f"  SMTP_PASSWORD: {'***已配置***' if smtp_password else '⚠ 未配置，邮件将无法发送！'}")
+
     env_content = f"""# ── 数据库 ──
 DATABASE_URL=sqlite:///./data/cup.db
 
@@ -147,8 +165,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES=1440
 # ── 邮件（QQ 邮箱 SMTP，使用 SSL 465 端口避免 STARTTLS 问题） ──
 SMTP_HOST=smtp.qq.com
 SMTP_PORT=465
-SMTP_USER=2583846465@qq.com
-SMTP_PASSWORD=
+SMTP_USER={smtp_user}
+SMTP_PASSWORD={smtp_password}
 SMTP_FROM=桂升通
 SMTP_USE_SSL=true
 
@@ -200,6 +218,7 @@ PORT=8000
     print("\n" + "=" * 60)
     print("  部署完成！")
     print("=" * 60)
+    mail_status = "✓ 已自动配置" if smtp_password else "✗ 未配置，验证码邮件将无法发送"
     print(f"""
   前端: http://{SERVER_IP}:5173
   后端 API: http://{SERVER_IP}:8000
@@ -207,7 +226,7 @@ PORT=8000
   API 健康检查: http://{SERVER_IP}:8000/api/hello
 
   ⚠ 请确保阿里云安全组已开放端口: 80, 443, 8000, 5173
-  ⚠ 配置 QQ 邮箱授权码后，请填入后端 .env 的 SMTP_PASSWORD
+  SMTP 邮件: {mail_status}
   """)
 
 if __name__ == "__main__":

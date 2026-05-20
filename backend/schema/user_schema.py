@@ -7,6 +7,15 @@ class UserRegister(BaseModel):
     username: str
     email: EmailStr
     password: str
+    code: str
+
+    @field_validator("code")
+    @classmethod
+    def validate_code(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) != 6 or not v.isdigit():
+            raise ValueError("验证码为6位数字")
+        return v
 
     @field_validator("username")
     @classmethod
