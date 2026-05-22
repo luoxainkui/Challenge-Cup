@@ -94,37 +94,6 @@
       <span v-else>登 录</span>
     </button>
 
-    <!-- ====== 第三方快捷登录 ====== -->
-    <div class="flex items-center gap-4 my-6">
-      <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-      <span class="text-xs text-slate-350 whitespace-nowrap tracking-wide">快捷登录</span>
-      <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-    </div>
-
-    <div class="flex justify-center gap-6">
-      <!-- 微信登录 -->
-      <button
-        class="social-btn social-btn--wechat group"
-        title="微信登录"
-        @click="handleSocialLogin('wechat')"
-      >
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.992 5.193c.455-.47 1.131-.47 1.586 0 .455.47.455 1.215 0 1.685-.455.47-1.131.47-1.586 0-.455-.47-.455-1.215 0-1.685zm4.1 0c.455-.47 1.131-.47 1.586 0 .455.47.455 1.215 0 1.685-.455.47-1.131.47-1.586 0-.455-.47-.455-1.215 0-1.685z"/>
-          <path d="M19.381 13.561c-3.184 0-5.774 2.588-5.774 5.774 0 3.186 2.59 5.774 5.774 5.774.645 0 1.272-.106 1.86-.303a.566.566 0 01.471.064l1.248.73a.214.214 0 00.11.035.193.193 0 00.19-.193c0-.042-.018-.098-.032-.145l-.256-.97a.386.386 0 01.14-.436c1.202-.883 1.982-2.279 1.982-3.854 0-3.186-2.59-5.774-5.774-5.774h.051zm-2.5 2.621c.36-.372.832-.372 1.192 0 .36.372.36.957 0 1.329-.36.372-.832.372-1.192 0-.36-.372-.36-.957 0-1.329zm3.964 0c.36-.372.832-.372 1.192 0 .36.372.36.957 0 1.329-.36.372-.832.372-1.192 0-.36-.372-.36-.957 0-1.329z"/>
-        </svg>
-      </button>
-      <!-- QQ登录 -->
-      <button
-        class="social-btn social-btn--qq group"
-        title="QQ登录"
-        @click="handleSocialLogin('qq')"
-      >
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21.395 13.581c-1.047-.632-2.442-1.416-2.442-3.352 0-1.582.76-2.417 1.213-3.064.26-.372.36-.687.413-.913.065-.285.087-.57.087-.856C20.666 2.08 18.818 0 12.2 0 5.58 0 3.333 2.08 3.333 5.396c0 .286.022.571.087.856.053.226.153.541.413.913.453.647 1.213 1.482 1.213 3.064 0 1.936-1.395 2.72-2.442 3.352C1.558 14.21 0 15.4 0 17.009v3.993c0 .547.453.998 1 .998h21c.547 0 1-.451 1-.998v-3.993c0-1.609-1.558-2.799-2.605-3.428z"/>
-        </svg>
-      </button>
-    </div>
-
     <!-- ====== 底部链接 ====== -->
     <div class="flex flex-col items-center gap-2 mt-5">
       <p class="text-sm text-slate-500 m-0">
@@ -274,9 +243,6 @@ function handleRegisterClick() {
   authStore.clearLoginRequired()
 }
 
-function handleSocialLogin(platform) {
-  loginError.value = `${platform === 'wechat' ? '微信' : 'QQ'}登录功能即将上线，敬请期待`
-}
 </script>
 
 <style scoped>
@@ -397,34 +363,4 @@ function handleSocialLogin(platform) {
   transform: none;
 }
 
-/* ====== 社交登录按钮 ====== */
-.social-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  border: 1.5px solid #e8ecf1;
-  background: #fafbfc;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #94a3b8;
-}
-.social-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-.social-btn--wechat:hover {
-  color: #07c160;
-  border-color: #07c160;
-  background: #f0fdf4;
-  box-shadow: 0 8px 24px rgba(7, 193, 96, 0.15);
-}
-.social-btn--qq:hover {
-  color: #0ea5e9;
-  border-color: #0ea5e9;
-  background: #f0f9ff;
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
-}
 </style>
